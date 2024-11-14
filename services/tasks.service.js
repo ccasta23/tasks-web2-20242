@@ -7,8 +7,10 @@ async function index() {
 }
 
 async function create(task) {
+    console.log('CREATE /api/v1/tasks');
     const newTask = await sequelize.models.task.create({
-        title: task.title
+        title: task.title,
+        done: (task.done) ? task.done : false
     })
     return newTask
 }
@@ -26,7 +28,8 @@ async function update(id, task) {
         return false
     }
     const [rowsAffected, [updatedTask]] = await sequelize.models.task.update({
-        title: task.title
+        title: task.title,
+        done: (task.done) ? task.done : searchedTask.done
     }, {
         where: {
             id
@@ -36,8 +39,21 @@ async function update(id, task) {
     return updatedTask
 }
 
-function destroy() {
+async function destroy(id) {
     console.log('DESTROY /api/v1/tasks/:id');
+    const task = await sequelize.models.task.findByPk(id)
+    console.log(task)
+    if(!task){
+        return false
+    }
+    await sequelize.models.task.destroy(
+        {
+            where: {
+                id
+            }
+        }
+    )
+    return task
 }
 
 export {

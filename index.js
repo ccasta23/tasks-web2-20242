@@ -1,4 +1,5 @@
 import express from 'express'
+import 'dotenv/config';
 import { routerTasks } from './routes/index.js';
 import { writeLog } from './utils/files.js';
 
