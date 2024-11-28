@@ -29,7 +29,7 @@ async function update(id, task) {
     }
     const [rowsAffected, [updatedTask]] = await sequelize.models.task.update({
         title: task.title,
-        done: (task.done) ? task.done : searchedTask.done
+        done: (task.done) ? task.done : false
     }, {
         where: {
             id
