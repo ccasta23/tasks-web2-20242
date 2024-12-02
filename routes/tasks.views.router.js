@@ -2,10 +2,19 @@ import express from "express";
 import { index, create, destroy, update } from "../services/tasks.service.js";
 export const tasksViewsRouter = express.Router();
 
+tasksViewsRouter.use((req, res, next) => {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.redirect("/auth/login");
+    }
+})
+
 tasksViewsRouter.get("/", async (req, res) => {
     const tasks = await index();
     res.render('index', {
-        tasks
+        tasks,
+        user: req.user
     });
 })
 
